@@ -25,7 +25,6 @@ export const FormularioEvento = () =>{
         const nuevoEvento = [...eventos, evento]
         setEventos(nuevoEvento)
         miAlmacenamineto.setItem("eventos", JSON.stringify(nuevoEvento))
-        setEvento(initialStateEvento) // ← limpia los campos
         setEvento(initialStateEvento)
     }
 
