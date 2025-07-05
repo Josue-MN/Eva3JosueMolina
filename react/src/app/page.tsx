@@ -1,15 +1,13 @@
 'use client'
 import { useEffect,useState } from "react"
-import { FormularioEvento } from "./FormularioEvento"
-import { FormularioEventoActualizar } from "./FormularioEventoActualizar"
+import GestionEventos from "./GestionEventos"
 
 export default function Home() {
 
 
   return(
   <>
-  <FormularioEvento/>
-  <FormularioEventoActualizar/>
+  <GestionEventos/>
   </>
   )
 }
