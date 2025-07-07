@@ -50,8 +50,8 @@ export const FormularioEventoActualizar = ({eventos, setEventos, eventoE,indexEv
         }
         setEvento(NuevoEvento)
         
-        const SoloLetras = /^[a-zA-Z]*$/
-        const SoloLetrasConEspacioYNumeros = /^[a-zA-Z0-9\s]*$/
+        const SoloLetras = /^[a-zA-ZñÑ]*$/
+        const SoloLetrasConEspacioYNumeros = /^[a-zA-ZñÑ0-9\s]*$/
         const CCEA = "Comuniquese con el administrador"
         const FechaActual = new Date().toISOString().split('T')[0]
         
