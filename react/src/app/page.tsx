@@ -1,13 +1,14 @@
 'use client'
-import { useEffect,useState } from "react"
-import GestionEventos from "./GestionEventos"
+import { Encabezado } from "./Componentes/Encabezado"
 
 export default function Home() {
 
 
   return(
   <>
-  <GestionEventos/>
+  <div className="LetrasYFondo">
+    <Encabezado/>
+  </div>
   </>
   )
 }

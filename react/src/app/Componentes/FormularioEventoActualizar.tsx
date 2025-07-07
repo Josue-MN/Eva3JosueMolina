@@ -1,13 +1,17 @@
 import React, {useEffect, useState} from "react";
-import { Evento } from "./Interfaces/IEventos";
-import { initialStateEvento } from "./constantes/InitialStates";
+import { Evento } from "../Interfaces/IEventos";
+import { initialStateEvento } from "../constantes/InitialStates";
+
 
 interface Props{
     eventos:Evento[];
-    setEventos:React.Dispatch<React.SetStateAction<Evento[]>>
+    setEventos:React.Dispatch<React.SetStateAction<Evento[]>>;
+    eventoE:Evento;
+    indexEvento:number;
+    cerrarFormulario: () => void;
 }
 
-export const FormularioEvento = ({eventos,setEventos}:Props) =>{
+export const FormularioEventoActualizar = ({eventos, setEventos, eventoE,indexEvento,cerrarFormulario}:Props) =>{
     const miAlmacenamineto = window.localStorage
     const [evento, setEvento] = useState(initialStateEvento)
     const [eNombreE, setENombreE] = useState("")
@@ -17,17 +21,21 @@ export const FormularioEvento = ({eventos,setEventos}:Props) =>{
     const [eFechaInicioE, setEFechaInicioE] = useState("")
     const [eFechaTerminoE, setEFechaTerminoE] = useState("")
     const [eDuracionE, setEDuracionE] = useState("")
-    const [errorRegistrar, setErrorRegistrar] = useState("")
+    const [errorActualizar, setErrorActualizar] = useState("")
 
-    useEffect(()=>{
-        let listadoSTREventos = miAlmacenamineto.getItem("eventos")
-        if(listadoSTREventos != null){
-            let listado = JSON.parse(listadoSTREventos)
-            setEventos(listado)
+
+    useEffect(() => {
+        const listadoSTREventos = miAlmacenamineto.getItem("eventos");
+        setEvento(eventoE)
+        if (listadoSTREventos != null) {
+            const listado = JSON.parse(listadoSTREventos);
+            setEventos(listado);
         }
-    },[])
+    },[eventoE]);
+
 
     
+
     const [nombreC, setNombreC] = useState(0)
     const [numeroC, setNumeroC] = useState(0)
     const [tipoC, setTipoC] = useState(0)
@@ -36,7 +44,7 @@ export const FormularioEvento = ({eventos,setEventos}:Props) =>{
     const [fechaTC, setFechaTC] = useState(0)
     const [duracionC, setDuracionC] = useState(0)
     const handleEvento = (name:string,value:string) =>{
-        
+
         const NuevoEvento = {
             ...evento,[name]:value
         }
@@ -101,11 +109,11 @@ export const FormularioEvento = ({eventos,setEventos}:Props) =>{
             setEDescripcionE("")
             if(SoloLetrasConEspacioYNumeros.test(NuevoEvento.descripcionEvento) == false){
                 setEDescripcionE("La descripcion no puede llevar caracteres especiales")
-            setDescripcionC(0)
+                setDescripcionC(0)
             }
             else if(SoloLetrasConEspacioYNumeros.test(NuevoEvento.descripcionEvento) == true){
-                setENombreE("")
-            setDescripcionC(1)
+                setEDescripcionE("")
+                setDescripcionC(1)
             }
             else{
                 setENumeroE(CCEA)
@@ -171,58 +179,61 @@ export const FormularioEvento = ({eventos,setEventos}:Props) =>{
         }
     }
 
-    const handleRegistrar = ()=>{
+    const handleActualizar = (indexUsado:number,EventoActualizado:Evento)=>{
         if(nombreC == 1 && numeroC == 1 && tipoC == 1 && descripcionC == 1 && fechaIC == 1 && fechaTC == 1 && duracionC == 1){
         //if(true){
-            const nuevoEvento = [...eventos, evento]
-            setEventos(nuevoEvento)
-            miAlmacenamineto.setItem("eventos", JSON.stringify(nuevoEvento))
-            setEvento(initialStateEvento)
+            const eventoActualizado = [...eventos]
+            eventoActualizado[indexUsado] = EventoActualizado
+            setEventos(eventoActualizado)
+            miAlmacenamineto.setItem("eventos",JSON.stringify(eventoActualizado))
             setNombreC(0)
             setNumeroC(0),setTipoC(0),setDescripcionC(0),setFechaIC(0),setFechaTC(0),setDuracionC(0)
-            setErrorRegistrar("")
+            setErrorActualizar("")
+            cerrarFormulario()
         }
         else{
-            setErrorRegistrar("Asegurese de completar todos los campos.")
+            setErrorActualizar("Asegurese de completar todos los campos.")
         }
+        
         
     }
 
-    
-
     return(
         <>
-        <h1>Formulario de registro de eventos</h1>
+        <div className="FondoFormulario">
+        <h1>Formulario de actualizacion de eventos</h1>
         <br></br>
-        <label>Nombre:</label>
+        <label>Nombre: </label>
         <input
         name="nombreEvento"
         type="text"
         placeholder="Ingrese el Nombre del Evento"
         value={evento.nombreEvento}
-        onChange={(e)=>handleEvento(e.currentTarget.name,e.currentTarget.value)}
+        onChange={(e)=>handleEvento("nombreEvento",e.currentTarget.value)}
         ></input>
         <br></br>
         <span>{eNombreE}</span>
         <br></br>
-        <label>Numero:</label>
+        <br></br>
+        <label>Numero: </label>
         <input
         name="numeroEvento"
         type="number"
         placeholder="Ingrese el Numero del Evento"
-        value={evento.numeroEvento || ""}
-        onChange={(e)=>handleEvento(e.currentTarget.name,e.currentTarget.value)}
+        value={evento.numeroEvento}
+        onChange={(e)=>handleEvento("numeroEvento",e.currentTarget.value)}
         ></input>
         <br></br>
         <span>{eNumeroE}</span>
         <br></br>
-        <label>Tipo:</label>
+        <br></br>
+        <label>Tipo: </label>
         <select
         name="tipoEvento"
         value={evento.tipoEvento}
-        onChange={(e)=>handleEvento(e.currentTarget.name,e.currentTarget.value)}
+        onChange={(e)=>handleEvento("tipoEvento",e.currentTarget.value)}
         >
-            <option value="">Elige la categoria del evento</option>
+            <option value="">Elige la nueva categoria del evento</option>
             <option value="Recaudacion">Evento de Recaudacion</option>
             <option value="Social">Evento Social</option>
             <option value="Empresa">Evento Empresarial</option>
@@ -232,58 +243,69 @@ export const FormularioEvento = ({eventos,setEventos}:Props) =>{
         <br></br>
         <span>{eTipoE}</span>
         <br></br>
-        <label>Descripcion:</label>
-        <br>
-        </br>
-        <textarea 
+        <br></br>
+        <label>Descripcion: </label>
+        <br></br>
+        <br></br>
+        <textarea
+        className="Descripcion"
         name="descripcionEvento"
-        rows="5"
-        cols="35"
         value={evento.descripcionEvento}
-        onChange={(e)=>handleEvento(e.currentTarget.name,e.currentTarget.value)}
+        onChange={(e)=>handleEvento("descripcionEvento",e.currentTarget.value)}
         ></textarea>
         <br></br>
         <span>{eDescripcionE}</span>
         <br></br>
-        <label>Fecha Inicio:</label>
+        <br></br>
+        <label>Fecha Inicio: </label>
         <input
         name="fechaIEvento"
         type="date"
         value={evento.fechaIEvento}
-        onChange={(e)=>handleEvento(e.currentTarget.name,e.currentTarget.value)}
+        onChange={(e)=>handleEvento("fechaIEvento",e.currentTarget.value)}
         ></input>
         <br></br>
         <span>{eFechaInicioE}</span>
         <br></br>
-        <label>Fecha Termino:</label>
+        <br></br>
+        <label>Fecha Termino: </label>
         <input
         name="fechaTEvento"
         type="date"
         value={evento.fechaTEvento}
-        onChange={(e)=>handleEvento(e.currentTarget.name,e.currentTarget.value)}
+        onChange={(e)=>handleEvento("fechaTEvento",e.currentTarget.value)}
         ></input>
         <br></br>
         <span>{eFechaTerminoE}</span>
         <br></br>
-        <label>Duracion:</label>
+        <br></br>
+        <label>Duracion: </label>
         <input
         name="duracionEvento"
         type="number"
         placeholder="Ingrese las horas que duro el evento"
-        value={evento.duracionEvento || ""}
-        onChange={(e)=>handleEvento(e.currentTarget.name,e.currentTarget.value)}
+        value={evento.duracionEvento}
+        onChange={(e)=>handleEvento("duracionEvento",e.currentTarget.value)}
         ></input>
         <br></br>
         <span>{eDuracionE}</span>
         <br></br>
+        <br></br>
 
         <button
-        onClick={() => {handleRegistrar()}}
-        >Registrar</button>
+        className="BotonesEncabezado"
+        onClick={() => {
+            handleEvento("nombreEvento",evento.nombreEvento)
+            if(confirm("¿Estas seguro que deseas Actualizar?")){
+                handleActualizar(indexEvento,evento)
+        }
+            }}
+        >Actualizar</button>
         <br></br>
-        <span>{errorRegistrar}</span>
+        <span>{errorActualizar}</span>
+        </div>
         </>
     );
 }
 
-export default FormularioEvento
+export default FormularioEventoActualizar
