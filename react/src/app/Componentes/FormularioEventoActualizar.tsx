@@ -22,6 +22,16 @@ export const FormularioEventoActualizar = ({eventos, setEventos, eventoE,indexEv
     const [eFechaTerminoE, setEFechaTerminoE] = useState("")
     const [eDuracionE, setEDuracionE] = useState("")
     const [errorActualizar, setErrorActualizar] = useState("")
+    const [nombreC, setNombreC] = useState(0)
+    const [numeroC, setNumeroC] = useState(0)
+    const [tipoC, setTipoC] = useState(0)
+    const [descripcionC, setDescripcionC] = useState(0)
+    const [fechaIC, setFechaIC] = useState(0)
+    const [fechaTC, setFechaTC] = useState(0)
+    const [duracionC, setDuracionC] = useState(0)
+    const comprobanteDeEventoSinCambios = JSON.stringify(evento) === JSON.stringify(eventoE)
+    const todoValidadoBoton = nombreC == 1 && numeroC == 1 && tipoC == 1 && descripcionC == 1 && fechaIC == 1 && fechaTC == 1 && duracionC == 1;
+
 
 
     useEffect(() => {
@@ -34,15 +44,6 @@ export const FormularioEventoActualizar = ({eventos, setEventos, eventoE,indexEv
     },[eventoE]);
 
 
-    
-
-    const [nombreC, setNombreC] = useState(0)
-    const [numeroC, setNumeroC] = useState(0)
-    const [tipoC, setTipoC] = useState(0)
-    const [descripcionC, setDescripcionC] = useState(0)
-    const [fechaIC, setFechaIC] = useState(0)
-    const [fechaTC, setFechaTC] = useState(0)
-    const [duracionC, setDuracionC] = useState(0)
     const handleEvento = (name:string,value:string) =>{
 
         const NuevoEvento = {
@@ -293,12 +294,12 @@ export const FormularioEventoActualizar = ({eventos, setEventos, eventoE,indexEv
 
         <button
         className="BotonesEncabezado"
+        disabled={ comprobanteDeEventoSinCambios || !todoValidadoBoton }
         onClick={() => {
-            handleEvento("nombreEvento",evento.nombreEvento)
             if(confirm("¿Estas seguro que deseas Actualizar?")){
                 handleActualizar(indexEvento,evento)
-        }
-            }}
+            }
+        }}
         >Actualizar</button>
         <br></br>
         <span>{errorActualizar}</span>
