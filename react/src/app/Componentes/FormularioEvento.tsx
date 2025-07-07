@@ -178,14 +178,12 @@ export const FormularioEvento = ({eventos,setEventos}:Props) =>{
             setEventos(nuevoEvento)
             miAlmacenamineto.setItem("eventos", JSON.stringify(nuevoEvento))
             setEvento(initialStateEvento)
-            setNombreC(0)
-            setNumeroC(0),setTipoC(0),setDescripcionC(0),setFechaIC(0),setFechaTC(0),setDuracionC(0)
+            setNombreC(0),setNumeroC(0),setTipoC(0),setDescripcionC(0),setFechaIC(0),setFechaTC(0),setDuracionC(0)
             setErrorRegistrar("")
         }
         else{
             setErrorRegistrar("Asegurese de completar todos los campos.")
-        }
-        
+        }   
     }
 
     
@@ -271,7 +269,7 @@ export const FormularioEvento = ({eventos,setEventos}:Props) =>{
         <span>{eFechaTerminoE}</span>
         <br></br>
         <br></br>
-        <label>Duracion: </label>
+        <label>Duracion (HRS): </label>
         <input
         name="duracionEvento"
         type="number"

@@ -17,19 +17,13 @@ export const MostrarEventos = (props:Props)=>{
     const [editarFormulario, setEditarFormulario] = useState(false)
 
     useEffect(()=>{
-    const cargarEventos = ()=>{
         const listadoSTREventos = miAlmacenamineto.getItem("eventos")
         if(listadoSTREventos != null){
             let listado = JSON.parse(listadoSTREventos)
-                props.setEventos(listado)
-        }
+            props.setEventos(listado)
     }
 
-        window.addEventListener("storage",cargarEventos)
-
-        cargarEventos();
-
-        return () => window.removeEventListener("storage",cargarEventos)
+        
 
     },[])
 

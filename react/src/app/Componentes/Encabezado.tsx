@@ -22,14 +22,6 @@ export const Encabezado = () =>{
         setindexEvento(index)
     }
     
-    useEffect(()=>{
-        let listadoSTREventos = miAlmacenamineto.getItem("eventos")
-        if(listadoSTREventos != null){
-            let listado = JSON.parse(listadoSTREventos)
-            setEventos(listado)
-        }
-    },[])
-    
 
 
     
